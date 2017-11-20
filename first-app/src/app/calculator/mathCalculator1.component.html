@@ -1,0 +1,10 @@
+<h3>Math Calculator - 1</h3>
+<label for="">Number 1:</label>
+<input type="number" [(ngModel)]="model.n1">
+<label for="">Number 2:</label>
+<input type="number" [(ngModel)]="model.n2">
+<input type="button" value="Add" (click)="model.add()">
+<input type="button" value="Subtract" (click)="model.subtract()">
+<input type="button" value="Multiply" (click)="model.multiply()">
+<input type="button" value="Divide" (click)="model.divide()">
+<div>{{model.result}}</div>
