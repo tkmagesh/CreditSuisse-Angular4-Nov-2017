@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { IBug } from './models/IBug';
 
+import { BugOperationsService } from './services/bugOperations.service';
+
+
 
 @Component({
 	selector : 'bug-tracker',
@@ -29,10 +32,14 @@ import { IBug } from './models/IBug';
 		<section class="list">
 			<ol>
 				<li *ngFor="let bug of bugs">
-					<span class="bugname" (click)="onBugClick(bug)" [ngClass]="{closed : bug.isClosed}">
-						{{bug | json}}
+					<span class="bugname" 
+						(click)="onBugClick(bug)" 
+						[ngClass]="{closed : bug.isClosed}"
+						[title]="bug.name"
+					>
+						{{bug.name | trimText:40 }}
 					</span>
-					<div class="datetime">[Created At]</div>
+					<div class="datetime">{{bug.createdAt | date:'dd-MMM-yyyy hh:mm:ss a'}}</div>
 				</li>
 			</ol>
 			<input type="button" value="Remove Closed" (click)="onRemoveClosedClick()">
@@ -42,17 +49,17 @@ import { IBug } from './models/IBug';
 export class BugTrackerComponent{
 	bugs : IBug[] = [];
 
+	constructor(private bugOperations : BugOperationsService){
+		
+	}
+
 	onCreateClick(bugName : string){
-		let newBug : IBug = {
-			name : bugName,
-			isClosed : false,
-			createdAt : new Date()
-		}
+		let newBug = this.bugOperations.createNew(bugName);
 		this.bugs.push(newBug);
 	}
 
 	onBugClick(bug : IBug){
-		bug.isClosed = !bug.isClosed;
+		this.bugOperations.toggle(bug);
 	}
 	onRemoveClosedClick(){
 		for(var index = this.bugs.length-1; index >=0; index--){
