@@ -11,7 +11,8 @@ export class MathCalculator2Component{
 	operator : string = '';
 
 	calculate(){
-		switch (this.operator) {
+		this.model[this.operator]();
+		/*switch (this.operator) {
 			case "add":
 				this.model.add();
 				break;
@@ -24,7 +25,7 @@ export class MathCalculator2Component{
 			case "divide":
 				this.model.divide();
 				break;
-		}
+		}*/
 	}
 
 }
