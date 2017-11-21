@@ -17,12 +17,12 @@ import { BugOperationsService } from './services/bugOperations.service';
 		</section>
 		<section class="sort">
 			<label for="">Order By :</label>
-			<select name="" id="">
-				<option value=""></option>
-				<option value=""></option>
+			<select [(ngModel)]="bugSortBy">
+				<option value="name">Name</option>
+				<option value="isClosed">Status</option>
 			</select>
 			<label for="">Descending ? :</label>
-			<input type="checkbox" name="" id="">
+			<input type="checkbox" [(ngModel)]="bugSortDescending">
 		</section>
 		<section class="edit">
 			<label for="">Bug Name :</label>
@@ -31,7 +31,7 @@ import { BugOperationsService } from './services/bugOperations.service';
 		</section>
 		<section class="list">
 			<ol>
-				<li *ngFor="let bug of bugs">
+				<li *ngFor="let bug of ( bugs | sort:bugSortBy:bugSortDescending) ">
 					<span class="bugname" 
 						(click)="onBugClick(bug)" 
 						[ngClass]="{closed : bug.isClosed}"
@@ -49,8 +49,14 @@ import { BugOperationsService } from './services/bugOperations.service';
 export class BugTrackerComponent{
 	bugs : IBug[] = [];
 
+	bugSortBy : string = '';
+	bugSortDescending : boolean = false;
+
 	constructor(private bugOperations : BugOperationsService){
-		
+		this.onCreateClick('Server communication failure');
+		this.onCreateClick('Data integrity checks failed');
+		this.onCreateClick('User actions not recognized');
+		this.onCreateClick('Application not responsive');
 	}
 
 	onCreateClick(bugName : string){
