@@ -11,7 +11,7 @@ import { BugOperationsService } from './services/bugOperations.service';
 		<h1>Bug Tracker</h1>
 		<hr>
 		<section class="stats">
-			<span class="closed">{{getClosedCount()}}</span>
+			<span class="closed">{{bugs | closedCount}}</span>
 			<span> / </span>
 			<span>{{bugs.length}}</span>
 		</section>
@@ -66,22 +66,12 @@ export class BugTrackerComponent{
 		this.bugs = [...this.bugs, newBug];
 	}
 
-	onBugClick(bug : IBug){
-		this.bugOperations.toggle(bug);
+	onBugClick(bugToToggle : IBug){
+		let toggledBug = this.bugOperations.toggle(bugToToggle);
+		this.bugs = this.bugs.map(bug => bug === bugToToggle ? toggledBug : bug);
 	}
 	onRemoveClosedClick(){
-		for(var index = this.bugs.length-1; index >=0; index--){
-			if (this.bugs[index].isClosed)
-				this.bugs.splice(index, 1);
-		}
+		this.bugs = this.bugs.filter(bug => !bug.isClosed);
 	}
 
-	getClosedCount(){
-		let closedCount = 0;
-		for(let index =0, count = this.bugs.length; index < count; index++){
-			if (this.bugs[index].isClosed)
-				++closedCount;
-		}
-		return closedCount;
-	}
 }
