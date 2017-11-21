@@ -1,0 +1,18 @@
+window.localStorage
+===================
+* key/value store
+* key & value must be strings
+	(use JSON.stringify & JSON.parse for serialization and deserialization respectively)
+* key must be unique
+* follows SOP
+* ~10MB limit
+* APIs
+------
+	- setItem(key, value)
+	- getItem(key) => value
+	- removeItem(key)
+	- clear()
+	- key(index) => key at index
+	- length
+
+
