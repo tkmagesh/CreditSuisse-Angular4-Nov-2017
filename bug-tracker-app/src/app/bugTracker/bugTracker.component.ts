@@ -26,8 +26,8 @@ import { BugOperationsService } from './services/bugOperations.service';
 		</section>
 		<section class="edit">
 			<label for="">Bug Name :</label>
-			<input type="text" #txtBugName>
-			<input type="button" value="Create New" (click)="onCreateClick(txtBugName.value)">
+			<input type="text" [(ngModel)]="newBugName">
+		<input type="button" value="Create New" (click)="onCreateClick()">
 		</section>
 		<section class="list">
 			<ol>
@@ -52,16 +52,18 @@ export class BugTrackerComponent{
 	bugSortBy : string = '';
 	bugSortDescending : boolean = false;
 
+	newBugName : string = '';
+
 	constructor(private bugOperations : BugOperationsService){
-		this.onCreateClick('Server communication failure');
-		this.onCreateClick('Data integrity checks failed');
-		this.onCreateClick('User actions not recognized');
-		this.onCreateClick('Application not responsive');
+		this.bugs.push(this.bugOperations.createNew('Server communication failure'));
+		this.bugs.push(this.bugOperations.createNew('Data integrity checks failed'));
+		this.bugs.push(this.bugOperations.createNew('User actions not recognized'));
+		this.bugs.push(this.bugOperations.createNew('Application not responsive'));
 	}
 
-	onCreateClick(bugName : string){
-		let newBug = this.bugOperations.createNew(bugName);
-		this.bugs.push(newBug);
+	onCreateClick(){
+		let newBug = this.bugOperations.createNew(this.newBugName);
+		this.bugs = [...this.bugs, newBug];
 	}
 
 	onBugClick(bug : IBug){
