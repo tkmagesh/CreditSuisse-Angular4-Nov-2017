@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { IBug } from '../models/IBug';
 import { BugServerService } from '../services/bugServer.service';
 
@@ -18,12 +19,12 @@ export class BugEditComponent{
 	@Output()
 	onNewBug : EventEmitter<IBug> = new EventEmitter<IBug>();
 
-	constructor(private bugServer : BugServerService){
+	constructor(private bugServer : BugServerService, private router : Router){
 
 	}
 	onCreateClick(){
 		this.bugServer
 			.addNew(this.newBugName)
-			.subscribe(newBug => this.onNewBug.emit(newBug));
+			.subscribe(newBug => this.router.navigate(['bugs']));
 	}
 }

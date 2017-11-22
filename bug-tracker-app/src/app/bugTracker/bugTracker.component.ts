@@ -6,8 +6,7 @@ import { BugServerService } from './services/bugServer.service';
 @Component({
 	selector : 'bug-tracker',
 	template :  `
-		<h1>Bug Tracker</h1>
-		<hr>
+		<a routerLink='/add'>Create New</a>
 		<bug-stats [data]="bugs"></bug-stats>
 		<section class="sort">
 			<label for="">Order By :</label>
@@ -18,7 +17,6 @@ import { BugServerService } from './services/bugServer.service';
 			<label for="">Descending ? :</label>
 			<input type="checkbox" [(ngModel)]="bugSortDescending">
 		</section>
-		<bug-edit (onNewBug)="onNewBugAdded($event)"></bug-edit>
 		<section class="list">
 			<ol>
 				<li *ngFor="let bug of ( bugs | sort:bugSortBy:bugSortDescending) ">
@@ -30,6 +28,7 @@ import { BugServerService } from './services/bugServer.service';
 						{{bug.name | trimText:40 }}
 					</span>
 					<div class="datetime">{{bug.createdAt | elapsed}}</div>
+					<div><a [routerLink]="['/details',bug.id]">More...</a></div>
 				</li>
 			</ol>
 			<input type="button" value="Remove Closed" (click)="onRemoveClosedClick()">

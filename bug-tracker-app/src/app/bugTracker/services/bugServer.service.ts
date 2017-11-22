@@ -17,6 +17,11 @@ export class BugServerService{
 			.get(this.baseUrl)
 			.map(response => response.json())
 	}
+	get(id) : Observable<IBug>{
+		return  this.http
+			.get(`${this.baseUrl}/${id}`)
+			.map(response => response.json())
+	}
 	addNew(bugName : string) : Observable<IBug>{
 		let newBugData = this.bugOperations.createNew(0, bugName);
 		return  this.http
