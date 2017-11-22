@@ -20,11 +20,7 @@ import { BugStorageService } from './services/bugStorage.service';
 			<label for="">Descending ? :</label>
 			<input type="checkbox" [(ngModel)]="bugSortDescending">
 		</section>
-		<section class="edit">
-			<label for="">Bug Name :</label>
-			<input type="text" [(ngModel)]="newBugName">
-		<input type="button" value="Create New" (click)="onCreateClick()">
-		</section>
+		<bug-edit (onNewBug)="onNewBugAdded($event)"></bug-edit>
 		<section class="list">
 			<ol>
 				<li *ngFor="let bug of ( bugs | sort:bugSortBy:bugSortDescending) ">
@@ -48,15 +44,14 @@ export class BugTrackerComponent{
 	bugSortBy : string = '';
 	bugSortDescending : boolean = false;
 
-	newBugName : string = '';
+	
 
 	constructor(private bugStorage : BugStorageService){
 		this.bugs = this.bugStorage.getAll();
 	}
 
-	onCreateClick(){
-		let newBug = this.bugStorage.addNew(this.newBugName);
-		this.bugs = [...this.bugs, newBug];
+	onNewBugAdded(bug : IBug){
+		this.bugs = [...this.bugs, bug];
 	}
 
 	onBugClick(bugToToggle : IBug){
