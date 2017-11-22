@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IBug } from './models/IBug';
 
-import { BugOperationsService } from './services/bugOperations.service';
-
+/*import { BugOperationsService } from './services/bugOperations.service';*/
+import { BugStorageService } from './services/bugStorage.service';
 
 
 @Component({
@@ -10,11 +10,7 @@ import { BugOperationsService } from './services/bugOperations.service';
 	template :  `
 		<h1>Bug Tracker</h1>
 		<hr>
-		<section class="stats">
-			<span class="closed">{{bugs | closedCount}}</span>
-			<span> / </span>
-			<span>{{bugs.length}}</span>
-		</section>
+		<bug-stats [data]="bugs"></bug-stats>
 		<section class="sort">
 			<label for="">Order By :</label>
 			<select [(ngModel)]="bugSortBy">
@@ -54,20 +50,23 @@ export class BugTrackerComponent{
 
 	newBugName : string = '';
 
-	constructor(private bugOperations : BugOperationsService){
-		
+	constructor(private bugStorage : BugStorageService){
+		this.bugs = this.bugStorage.getAll();
 	}
 
 	onCreateClick(){
-		let newBug = this.bugOperations.createNew(this.newBugName);
+		let newBug = this.bugStorage.addNew(this.newBugName);
 		this.bugs = [...this.bugs, newBug];
 	}
 
 	onBugClick(bugToToggle : IBug){
-		let toggledBug = this.bugOperations.toggle(bugToToggle);
+		let toggledBug = this.bugStorage.toggle(bugToToggle);
 		this.bugs = this.bugs.map(bug => bug === bugToToggle ? toggledBug : bug);
 	}
 	onRemoveClosedClick(){
+		this.bugs
+			.filter(bug => bug.isClosed)
+			.forEach(bug => this.bugStorage.remove(bug));
 		this.bugs = this.bugs.filter(bug => !bug.isClosed);
 	}
 
