@@ -35,7 +35,7 @@ import { BugStorageService } from './services/bugStorage.service';
 					>
 						{{bug.name | trimText:40 }}
 					</span>
-					<div class="datetime">{{bug.createdAt | date:'dd-MMM-yyyy hh:mm:ss a'}}</div>
+					<div class="datetime">{{bug.createdAt | elapsed}}</div>
 				</li>
 			</ol>
 			<input type="button" value="Remove Closed" (click)="onRemoveClosedClick()">
