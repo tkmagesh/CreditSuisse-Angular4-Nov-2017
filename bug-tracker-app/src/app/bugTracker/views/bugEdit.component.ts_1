@@ -1,6 +1,9 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { IBug } from '../models/IBug';
-import { BugServerService } from '../services/bugServer.service';
+import { BugStorageService } from '../services/bugStorage.service';
+import { BugOperationsService } from '../services/bugOperations.service';
+
+import { Http } from '@angular/http';
 
 @Component({
 	selector : 'bug-edit',
@@ -18,12 +21,14 @@ export class BugEditComponent{
 	@Output()
 	onNewBug : EventEmitter<IBug> = new EventEmitter<IBug>();
 
-	constructor(private bugServer : BugServerService){
+	constructor(private bugOperations : BugOperationsService, private http : Http){
 
 	}
 	onCreateClick(){
-		this.bugServer
-			.addNew(this.newBugName)
+		let newBugData = this.bugOperations.createNew(0, this.newBugName);
+		this.http
+			.post('http://localhost:3000/bugs', newBugData)
+			.map(response => response.json())
 			.subscribe(newBug => this.onNewBug.emit(newBug));
 	}
 }

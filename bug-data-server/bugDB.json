@@ -1,16 +1,16 @@
 {
   "bugs": [
     {
-      "id": 1,
-      "name": "Test 1",
-      "isClosed": false,
-      "createdAt": "2017-10-11T10:29:27.340Z"
-    },
-    {
       "id": 2,
       "name": "A dummy bug",
       "isClosed": false,
       "createdAt": "2017-11-01T11:29:19.160Z"
+    },
+    {
+      "id": 3,
+      "name": "Unable to create a new bug",
+      "isClosed": false,
+      "createdAt": "2017-11-22T06:35:08.207Z"
     }
   ],
   "projects": [

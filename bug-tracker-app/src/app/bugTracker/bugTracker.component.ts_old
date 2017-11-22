@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { IBug } from './models/IBug';
 
-import { BugServerService } from './services/bugServer.service';
+/*import { BugOperationsService } from './services/bugOperations.service';*/
+import { BugStorageService } from './services/bugStorage.service';
+
 
 @Component({
 	selector : 'bug-tracker',
@@ -43,13 +45,11 @@ export class BugTrackerComponent implements OnInit {
 	bugSortDescending : boolean = false;
 
 	ngOnInit(){
-		this.bugServer
-			.getAll()
-			.subscribe(bugs => this.bugs = bugs);
+		this.bugs = this.bugStorage.getAll();
 	}
 	
 
-	constructor(private bugServer : BugServerService){
+	constructor(private bugStorage : BugStorageService){
 		
 	}
 
@@ -58,14 +58,13 @@ export class BugTrackerComponent implements OnInit {
 	}
 
 	onBugClick(bugToToggle : IBug){
-		this.bugServer
-			.toggle(bugToToggle)
-			.subscribe(toggledBug => this.bugs = this.bugs.map(bug => bug.id === bugToToggle.id ? toggledBug : bug));
+		let toggledBug = this.bugStorage.toggle(bugToToggle);
+		this.bugs = this.bugs.map(bug => bug === bugToToggle ? toggledBug : bug);
 	}
 	onRemoveClosedClick(){
 		this.bugs
 			.filter(bug => bug.isClosed)
-			.forEach(bug => this.bugServer.remove(bug).subscribe(_ => {}));
+			.forEach(bug => this.bugStorage.remove(bug));
 		this.bugs = this.bugs.filter(bug => !bug.isClosed);
 	}
 
